@@ -1,0 +1,47 @@
+<template>
+    <div style="height: 100vh; padding-right: 25px; padding-left: 1px; overflow-y: auto; overflow-x: hidden;" class="scroll-1">
+        <table class="slds-table slds-table_cell-buffer slds-m-top_x-small">
+             <tbody>
+                 <template for:each={tableData} for:item="rowData" for:index="index">
+                     <tr key={rowData.id} class={rowData.rowStyle} >
+                        <td class="" style="width: 1%;">
+                            <!-- <div if:true={rowData.selectedCheckbox}>
+                                <input type="checkbox" name={rowData.BomPartId} data-recordid={rowData.id} data-my-id="checkboxes" data-id={rowData.id} onclick={handleCheckbox} checked>
+                            </div>
+                            <div if:false={rowData.selectedCheckbox}> -->
+                                <input type="Radio" name={rowData.id} checked={rowData.selectedCheckbox} disabled={rowData.disableCheckbox} data-recordid={rowData.id} data-my-id="checkboxes" data-id={rowData.id} onclick={handleCheckbox}  class="checkAssign">
+                            <!-- </div> -->
+                        </td>
+                        <!-- <td class={rowData.Action} style="width: 5%;">{rowData.Action}</td> -->
+                        <td style="width: 13%;" class={rowData.css2} data-id={rowData.id}  >
+                            <div style ={rowData.nameStyle}>
+                                <lightning-icon icon-name={rowData.iconName} 
+                                size=x-small 
+                                type="url"
+                                onclick={showOrHideChildrenRows} 
+                                data-rowid={rowData.id}
+                                data-recordid={rowData.id}
+                                data-rowlevel={rowData.level}
+                                data-expanded="false">
+                                </lightning-icon>
+                                <!-- <template if:true={rowData.markState}> -->
+                                    &nbsp;{rowData.Name}&nbsp;&nbsp;&nbsp;
+                                    <!-- &nbsp;&nbsp;&nbsp;{rowData.bomPartName}&nbsp;&nbsp;&nbsp; -->
+                                <!-- </template>
+                                <template if:false={rowData.markState}>
+                                    &nbsp;&nbsp;&nbsp;{rowData.bomPartName}&nbsp;&nbsp;&nbsp;
+                                </template> -->
+                                <!-- <span class={rowData.mark}>&nbsp;&nbsp;&nbsp;{rowData.bomPartName}&nbsp;&nbsp;&nbsp;</span> -->
+                            </div>
+                        </td>
+                     </tr>
+                 </template>
+             </tbody>
+         </table>
+       </div>
+
+   </div>
+</div>
+</template>
+
+</template>

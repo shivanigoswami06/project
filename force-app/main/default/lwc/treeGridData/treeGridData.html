@@ -1,0 +1,737 @@
+<template> 
+  <article class="slds-card" style="padding-top: 5px;" >
+    <!-- <lightning-card> -->
+      <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+      </template>
+     
+      <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12">&nbsp;&nbsp;
+        
+        {mLevel} Milestone, {tLevel} Task, {sLevel} Sub Task
+          
+        <!-- {RefreshCount} Levels -->
+           
+          </div>
+        
+           
+      <div class="slds-grid slds-wrap" style="padding-left: 700px; padding-bottom: 15px;">
+        <div class="slds-grid">
+          
+              <!-- <lightning-input type="search" label="combobox" role="textbox" variant="label-hidden"
+                  placeholder="Search" onchange={searchField}>
+              </lightning-input> -->
+              <div class="slds-float_right">
+                <lightning-button-group>
+              <lightning-input variant="label-hidden" onchange={handleChange} name="enter-search"
+                      aria-activedescendant="option1" aria-autocomplete="list" aria-controls="listbox-id-12" role="textbox"
+                      placeholder="Search" type="search" value={searchKey} style="width: auto;">
+                    </lightning-input>&nbsp;&nbsp;
+                  <lightning-button-menu label="Expand" onclick={clickToExpandAll} variant={exvariant}>
+                      
+                      <lightning-menu-item value="Milestone" label="Milestone"></lightning-menu-item>
+                      <lightning-menu-item value="Task" label="Task"></lightning-menu-item>
+                      <lightning-menu-item value="Sub Task" label="Sub Task"></lightning-menu-item>
+                      <lightning-menu-item value="Selected" label="Selected"></lightning-menu-item>
+                      </lightning-button-menu>&nbsp;&nbsp;
+
+                      <!-- <lightning-button-menu alternative-text="Show menu" onselect={handleChange} onclick={handleLevels}
+                label="Expand">
+                <template for:each={menuLevelItem} for:item="levelValue">
+                  <lightning-menu-item label={levelValue.label} value={levelValue.value} key={levelValue.value}>
+                  </lightning-menu-item>
+                </template>
+              </lightning-button-menu>
+                  -->
+                  <lightning-button-icon data-id={index} icon-name="utility:delete"
+                        class="slds-m-left_xxx-small slds-button slds-button_icon slds-button_middle"
+                         onclick={showDeleteModal} disabled={deleteUsers}>
+                      </lightning-button-icon>&nbsp;&nbsp;
+                  <!-- <button icon-name="utility:Delete" onclick={deleteRecordClick}>
+                  </button> -->
+                  <!-- <lightning-button alternative-texttask="Save" onselect={handleExpand} onclick={savefile}
+                  class="slds-button slds-button_brand" label="Save">
+                  </lightning-button> -->
+                  <button class="slds-button slds-button_brand" onclick={savefile} title="Save">
+                    Save
+                  </button>&nbsp;&nbsp;
+                  <lightning-button-menu class="slds-button slds-button_Neutral" label="Add" onclick={CloseModel} title="Add">
+                      
+                  <lightning-menu-item value="Milestone" label="Milestone" onclick={openModal}></lightning-menu-item>
+                  <lightning-menu-item value="Task" label="Task" onclick={openModal1} disabled={InsertSubRowButton}></lightning-menu-item>
+                  <lightning-menu-item value="Sub Task" label="Sub Task" onclick={openModal2} disabled={InsertSubTaskButton}></lightning-menu-item>
+                  </lightning-button-menu>&nbsp;&nbsp;
+                  <!-- <lightning-button class="slds-button slds-button_Neutral" onclick={CloseModel} title="History">
+                      History
+                  </lightning-button> -->
+                  <lightning-button alternative-text="History" value="History" onclick={openModal3}
+                  class="slds-button slds-button_middle btnHistory" label="History">
+                  </lightning-button>
+                  <!-- <button  class="btnHistory" value="History"  onclick={handleClickHistory} data-id="button-history">History</button>   -->
+              </lightning-button-group>
+          </div>
+      </div>
+  </div>
+  
+      <div class="slds-scrollable" style=" overflow-y:scroll; overflow: auto; max-height: auto; ">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_x-small">
+          <thead>
+            <tr class="slds-line-height_reset">
+              <!-- <template for:each={header} for:item="h"> -->
+                <!--1-->
+                <th class="header" scope="col" style="width: 2vw; text-align: left;"></th>
+
+                <th class="header" scope="col" style="width: 2vw; text-align: left;"></th>
+                <!--2-->
+                <th class="header" scope="col" style="width: 7vw; text-align: left;">
+                  <div>Name</div>
+                </th>
+                <th class="header" scope="col" style="width: 5vw; text-align: left;">
+                  <div>Level</div>
+                </th>
+                <!--3-->
+                <th class="header" scope="col" style="width: 5vw; text-align: left;">
+                  <div>Stage</div>
+                </th>
+                <!--4-->
+                <th  scope="col" style="width:5vw">
+                  <div>Files</div>
+                </th>
+                <!--5-->
+                <th scope="col" style="width:5vw">
+                  <div>Assignee</div>
+                </th>
+                <!--6-->
+                <th class="header" scope="col" style="width:8vw; text-align: left;">
+                  <div>Start Date</div>
+                </th>
+                <!--7-->
+                <th class="header" scope="col" style="width:8vw; text-align: left;">
+                  <div>End Date</div>
+                </th>
+                <!--8-->
+                <th class="header" scope="col" style="width: 5vw; text-align: left;">
+                  <div>Duration(Days)</div>
+                </th>
+                <!--9-->
+                <th class="header" scope="col" style="width: 5vw; text-align: left;">
+                  <div>% completion</div>
+                </th>
+              <!-- </template> -->
+            </tr>
+          </thead>
+
+          <tbody style="padding: l;">
+            <template if:false={searchUser}>
+            <template for:each={projectdata} for:item="rowData" for:index="index">
+              <tr data-name="rowdrag" key={rowData.id} class={rowData.rowStyle} 
+                ondrop={drop}>
+                <!--1-->
+                <td>
+                  <lightning-input type="checkbox" name={rowData.name} data-recordid={rowData.id}
+                    data-recid={rowData.id} data-my-id="checkboxes" data-id={rowData.id} onclick={handleCheckbox}
+                     data-level={rowData.Level}>
+                  </lightning-input>
+                </td>
+
+                <td>
+                <div style={rowData.nameStyle} class="iconstyle">
+                  <div>
+                  <lightning-icon icon-name={rowData.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                      data-rowid={rowData.id} data-recordid={rowData.id} data-rowlevel={rowData.Level}>
+                  </lightning-icon>
+                </div>
+                </div>
+                </td>
+                <!--2-->
+                <!-- <td data-label="Owner">
+                  <div class="slds-cell-wrap">
+                      <a href={it.value.OwnerURL}>
+                          {it.value.OwnerName}
+                      </a>
+                  </div>
+              </td> -->
+                <td style="text-align: left;">{rowData.Name}</td>
+                <!--3-->
+                <!-- <td style="text-align: left"> -->
+                    
+                       <!-- <input type="text" data-recordid={rowData.id} data-id={index} data-rowlevel={rowData.Level}
+                        value={rowData.Level} />
+                        {rowData.Level}
+                </td>  -->
+
+                  <td >
+                  <div style={rowData.colorStyle}>
+                  {rowData.Level}
+                </div>
+                    
+                     <!-- <input type="text" data-recordid={rowData.id} data-id={index} data-rowlevel={rowData.Level}
+                        value={rowData.Level} />  -->
+                        </td>
+                <!--4-->
+                <td style="text-align: left;">{rowData.Stage}</td>
+                <!--5-->
+                <td>
+                  <template if:true={rowData.Files}>
+                    <a>
+                      <img src={filledfile} style="max-width: 25%; text-align: left; height: auto" alt="files present" title="Files Present"
+                        data-id={rowData.id} onclick={navigateToManagement_FilesTab} />
+                    </a>
+  
+                  </template>
+                  <template if:false={rowData.Files}>
+                    <a>
+                      <img src={emptyfile} style="max-width: 25%; text-align: left; height: auto" alt="no files"
+                        title="No Files Present" data-id={rowData.id}
+                        onclick={navigateToManagement_FilesTab} />
+                    </a>
+  
+                  </template>
+                </td>
+                <td> 
+                  <template if:true={rowData.Assignee}>
+                    <a>
+                      <img src={emptyuser} style="max-width: 25%; text-align: left; height: auto" alt="files present" title="Files Present"
+                        data-id={rowData.id} onclick={navigateToTeamsTab} />
+                    </a>
+                  </template>
+                  <template if:false={rowData.Assignee}>
+                    <a>
+                      <img src={filleduser} style="max-width: 25%; text-align: left; height: auto" alt="no files"
+                        title="No Files Present" data-id={rowData.id}
+                        onclick={navigateToTeamsTab} />
+                    </a>
+  
+                  </template>
+                </td>
+                <!-- <td style="text-align: center;">{rowData.Duration}</td> -->
+                <!-- <td style="text-align: center">
+                  <template if:true={rowData.tools}>
+                    <a>
+                      <img src={filledtool} style="max-width: 35%; height: auto" alt="tools present" title="Tools Present"
+                        onclick={showModalh} data-id={rowData.id} />
+                    </a>
+  
+                  </template>
+                  <template if:false={rowData.tools}>
+                    <a>
+                      <img src={emptytool} style="max-width: 30%; height: auto" alt="no user"
+                        title="No Tools Present" onclick={navigateToToolsPage} data-id={rowData.id}
+                      />
+                    </a>
+                  </template>
+                </td> -->
+
+
+                <td style="text-align: left;">
+                  <input data-id={rowData.id}
+                  type="date"
+
+               style="
+                  font-weight: 400;
+                  border-style: none none solid none;
+                  background-color: transparent;
+                  height: 25%;
+                  width: 70%;
+                  resize: none;
+                  outline: none;
+              " min={minDate} value={rowData.StartDate} data-startdate={rowData.StartDate} >
+              <lightning-button-icon variant="bare" data-id={rowData.id} 
+                  icon-name={iconName} alternative-text="Settings" title="Settings"
+                  onclick={estimateEdit}></lightning-button-icon></td>
+                  
+
+                 
+                
+            
+                  </td>
+
+                  <td style="text-align: left;">
+                    <input data-id={rowData.id} style="
+                    font-weight: 400;
+                    border-style: none none solid none;
+                    background-color: transparent;
+                    height: 25%;
+                    width: 70%;
+                    resize: none;
+                    outline: none;
+                " value={rowData.EndDate} data-startdate={rowData.EndDate} onchange={milestoneEndDateChange} >
+                <lightning-button-icon variant="bare" data-id={rowData.id} 
+                    icon-name={iconName} alternative-text="Settings" title="Settings"
+                    onclick={milestoneEndDateEdit}></lightning-button-icon></td>
+                    
+                <td style="text-align: left;">{rowData.Duration}</td>
+                <td style="text-align: left;">{rowData.PercentageComplete}</td>
+              </tr>
+            </template>
+          </template>
+
+          <template if:true={searchUser}>
+            <!-- <template for:each={searchList} for:item="s" for:index="index">
+              <tbody key={s.Id}>
+                <tr style="border-bottom: 0.5px solid rgba(0, 0, 0, 0.233)">
+                  <td style="
+                          text-align: center;
+                          padding-right: 10px;
+                          padding-left: 10px;
+                        ">
+                    <input data-id={s.Id} name="Selected" type="checkbox" onchange={handleCheck}/>
+                     
+                  </td>
+                  <td>{s.Name}</td>
+                  <td>{s.status}</td>
+                  <td>{s.assignee}</td>
+                  <td>{s.enddate}</td>
+                  <td>{s.startdate}</td>
+                </tr>
+              </tbody> -->
+
+              <template for:each={searchList} for:item="s" for:index="index">
+                <tr data-id={index} data-name="rowdrag" key={s.id} class={s.rowStyle} 
+                  ondrop={drop}>
+                  <!--1-->
+                  <td>
+                    <lightning-input type="checkbox" name={s.name} data-recordid={s.id}
+                      data-recid={s.id} data-my-id="checkboxes" data-id={index} onclick={handleCheckbox}
+                       data-level={s.Level}>
+                    </lightning-input>
+                  </td>
+  
+                  <td>
+                  <div style={s.nameStyle} class="iconstyle">
+                    <div>
+                    <lightning-icon icon-name={s.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                        data-rowid={s.id} data-recordid={s.id} data-rowlevel={s.Level}>
+                    </lightning-icon>
+                  </div>
+                  </div>
+                  </td>
+                  <!--2-->
+                  <!-- <td data-label="Owner">
+                    <div class="slds-cell-wrap">
+                        <a href={it.value.OwnerURL}>
+                            {it.value.OwnerName}
+                        </a>
+                    </div>
+                </td> -->
+                  <td style="text-align: left;">{s.Name}</td>
+                  <!--3-->
+                  <td>
+                    {s.Level}
+                      <!-- <div style={s.colorStyle}>
+                      {s.Level}
+                    </div> -->
+                  </td>
+                  <!--4-->
+                  <td style="text-align: left;">{s.Status}</td>
+                  <!--5-->
+                  <td>
+                    <template if:true={s.Files}>
+                      <a>
+                        <img src={filledfile} style="max-width: 25%; text-align: left; height: auto" alt="files present" title="Files Present"
+                          data-id={s.id} onclick={navigateToManagement_FilesTab} />
+                      </a>
+    
+                    </template>
+                    <template if:false={s.Files}>
+                      <a>
+                        <img src={emptyfile} style="max-width: 25%; text-align: left; height: auto" alt="no files"
+                          title="No Files Present" data-id={s.id}
+                          onclick={navigateToManagement_FilesTab} />
+                      </a>
+    
+                    </template>
+                  </td>
+                  <td> 
+                    <template if:true={s.Assignee}>
+                      <a>
+                        <img src={filleduser} style="max-width: 25%; text-align: left; height: auto" alt="files present" title="Files Present"
+                          data-id={s.id} onclick={navigateToTeamsTab} />
+                      </a>
+                    </template>
+                    <template if:false={s.Assignee}>
+                      <a>
+                        <img src={emptyuser} style="max-width: 25%; text-align: left; height: auto" alt="no files"
+                          title="No Files Present" data-id={s.id}
+                          onclick={navigateToTeamsTab} />
+                      </a>
+    
+                    </template>
+                  </td>
+                  <!-- <td style="text-align: left;">
+                    <input data-id={s.id} style="
+                    font-weight: 400;
+                    border-style: none none solid none;
+                    background-color: transparent;
+                    height: 25%;
+                    width: 70%;
+                    resize: none;
+                    outline: none;
+                " value={s.StartDate} data-startdate={s.StartDate} onchange={milestoneStartDateChange} disabled />
+                <lightning-button-icon variant="bare" data-id={s.id} 
+                    icon-name={iconName} alternative-text="Settings" title="Settings"
+                    onclick={milestoneStartDateEdit}></lightning-button-icon></td>
+                     -->
+                     
+                     <!--heenakshi-->
+                     <!-- <td style="text-align: left;">
+                      <div>
+                      {rowData.StartDate}
+                     </div>
+                      <input data-id={rowData.id}
+                      type="date"
+    
+                   style="
+                      font-weight: 400;
+                      border-style: none none solid none;
+                      background-color: transparent;
+                      height: 25%;
+                      width: 70%;
+                      resize: none;
+                      outline: none;
+                  " min={minDate} value={rowData.StartDate} data-startdate={rowData.StartDate} disabled />
+                  <lightning-button-icon variant="bare" data-id={rowData.id} 
+                  onchange={milestoneStartDateChange}
+                      icon-name={iconName} alternative-text="Settings" title="Settings"
+                      onclick={estimateEdit}></lightning-button-icon></td> -->
+                      
+                      <td
+              colspan="5"
+              style="
+                border: 0;
+                margin: 0px;
+                padding-bottom: 0px;
+                position: sticky;
+                z-index: 1;
+                width: 15%;
+                top: 0;
+                left: 244px;
+                background-color: #ffffff;
+              "
+            >
+              <div
+                data-name={s.id}
+                style="
+                  background-color: white;
+                  position: absolute;
+                  width: 85%;
+                "
+              >
+                <!-- {rowData.StartDate} -->
+              </div>
+              <input
+                style="
+                  border-style: none;
+                  width: 85%;
+                  resize: none;
+                  background-color: transparent;"
+                type="date"
+                value={s.StartDate}
+                data-id={s.id}
+               
+                onchange={milestoneDateChange}
+                disabled
+              />
+              <lightning-button-icon
+              onchange={milestoneStartDateChange}
+             
+             
+              data-id={s.id}
+              icon-name={iconName}
+              variant="bare"
+              size="small"
+              title="Edit Date"
+              onclick={milestoneStartDateEdit}
+              align="right"
+              disabled={disabledForEditOption}
+            >
+            </lightning-button-icon>
+           
+          </td>
+
+
+
+
+
+
+                    <td style="text-align: left;">
+                      <input data-id={s.id} style="
+                      font-weight: 400;
+                      border-style: none none solid none;
+                      background-color: transparent;
+                      height: 25%;
+                      width: 70%;
+                      resize: none;
+                      outline: none;
+                  " value={s.EndDate} data-startdate={s.EndDate} onchange={milestoneEndDateChange} disabled />
+                  <lightning-button-icon variant="bare" data-id={s.id} 
+                      icon-name={iconName} alternative-text="Settings" title="Settings"
+                      onclick={milestoneEndDateEdit}></lightning-button-icon></td>
+                  <td style="text-align: left;">{s.Duration}</td>
+                  <td style="text-align: left;">{s.PercentageComplete}</td>
+                </tr>
+              </template>
+          </template>
+          </tbody>
+        </table>
+      </div>
+    <!-- </lightning-card> -->
+    </article>
+   
+<template if:true={isModalOpen}>
+  <div class="slds-modal slds-fade-in-open slds-backdrop">
+      <div class="slds-modal__container custom-width2">
+          <!-- modal header start -->
+          <div class="slds-modal__header header" style="width:600px">
+              <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                  variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+              </lightning-button-icon> 
+              <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Milestone</h2>
+          </div> 
+          <!-- modal body start -->
+          <div class="slds-modal__content scroll-1" style="height: 200px;width:600px">
+              <div class="slds-grid slds-wrap custom-container" style="margin-top:10px;">
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                    <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                        <abbr class="slds-required" title="required">*</abbr>Milestone Name</label>
+                    
+                    <lightning-input 
+                        class=" requiredfield" 
+                        type="text"
+                        name="milestone" variant="label-hidden"
+                        placeholder="New Milestone" value={name} onchange={addName}
+                        style="padding-bottom: 20px;width:150px; font-weight: normal;color:#54698d">
+                    </lightning-input>
+                    </div>
+                <!-- <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                    <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                        <abbr class="slds-required" title="required">*</abbr>Milestone Name</label>                                   
+                    <lightning-input type="text" name="Milestonename" value={name} onchange={addName}
+                      style="padding-bottom: 20px; padding-right: 20px; width:200px" placeholder="New Milestone">
+                    </lightning-input>
+            
+                  </div>  -->
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control"
+                style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+                <span style="padding-left:50px">
+                    <label class="slds-form-element__label"
+                      style="text-align:center;padding-bottom:5px; ">
+                        <em style="color:red;">*</em>Project
+                    </label>
+                    <br>
+                  
+                <span style="padding-left:50px">
+            <lightning-icon icon-name="custom:custom5" variant="circle"
+                alternative-text={projectName} size="small"></lightning-icon>
+            &nbsp;{projectName}
+        </span>
+    </span>
+</div>                                           
+                          <div class="slds-col slds-size_1-of-3 slds-form-element__control" style="padding-left:50px;">
+                          <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                              <abbr class="slds-required" title="required">*</abbr>Start Date</label>
+                   
+                          <lightning-input 
+                              class=" requiredfield" 
+                              type="date"
+                              name="startDate" variant="label-hidden"
+                              min={minDate} 
+                              placeholder="Enter Start Date" value={strtDate} onchange={changestrtDate}
+                              style="padding-bottom: 20px; font-weight: normal;color:#54698d">
+                          </lightning-input>
+                          </div>
+                          <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:150px;">
+                              <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                                  <abbr class="slds-required" title="required">*</abbr>End Date</label>
+                              
+                              <lightning-input 
+                                  class=" requiredfield" 
+                                  type="date"
+                                  name="startDate" variant="label-hidden"
+                                  min={strtDate} 
+                                  placeholder="Enter End Date" value={enddate} onchange={changeDate}
+                                  style="padding-bottom: 20px; font-weight: normal;color:#54698d">
+                              </lightning-input>
+                              </div>
+                    
+                                                 
+          </div>
+          </div>
+          <!-- modal footer start-->
+          <div class="slds-modal__footer" style="width:600px">
+              <div>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Cancel" onclick={closeModal}></lightning-button>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Save" onclick={saveClick}></lightning-button>
+              </div>
+          </div>
+      </div>
+  </div>   
+  <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+</template>
+
+    <!-- Insert milestone Ends here -->
+  
+    <!-- Insert task Starts here -->
+    <template if:true={isModalOpen1}>
+      <div class="slds-modal slds-fade-in-open slds-backdrop">
+          <div class="slds-modal__container custom-width2">
+              <!-- modal header start -->
+              <div class="slds-modal__header header" style="width:600px">
+                  <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                      variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+                  </lightning-button-icon> 
+                  <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Add Task</h2>
+              </div> 
+              <!-- modal body start -->
+              <div class="slds-modal__content scroll-1" style="height: 150px;width:600px">
+                  <div class="slds-grid slds-wrap custom-container" style="margin-top:10px;">
+                    <div class="slds-col slds-size_1-of-2 slds-form-element__control"
+                    style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+                    <span style="padding-left:50px">
+                        <label class="slds-form-element__label"
+                          style="text-align:center;padding-bottom:5px; ">
+                            <em style="color:red;">*</em>Milestone Name
+                        </label>
+                        <br>
+                      
+                    <span style="padding-left:50px">
+                <lightning-icon icon-name="custom:custom5" variant="circle"
+                    alternative-text={milestoneName} size="small"></lightning-icon>
+                &nbsp;{milestoneName}
+            </span>
+        </span>
+    </div>   
+                    <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                        <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                            <abbr class="slds-required" title="required">*</abbr>Task Name</label>
+                        
+                        <lightning-input 
+                            class=" requiredfield" 
+                            type="text"
+                            name="Task" variant="label-hidden"
+                            placeholder="NewTask" value={name} onchange={addName}
+                            style="padding-bottom: 20px;width:150px; font-weight: normal;color:#54698d">
+                        </lightning-input>
+                        </div>
+                                                            
+    
+              </div>
+              </div>
+              <!-- modal footer start-->
+              <div class="slds-modal__footer" style="width:600px">
+                  <div>
+                      <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Cancel" onclick={closeModal1}></lightning-button>
+                      <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Save" onclick={saveClick1}></lightning-button>
+                  </div>
+              </div>
+          </div>
+      </div>   
+      <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+    </template>
+
+  
+  
+    <!-- Insert sub task Starts here -->
+    <template if:true={isModalOpen2}>
+      <div class="slds-modal slds-fade-in-open slds-backdrop">
+          <div class="slds-modal__container custom-width2">
+              <!-- modal header start -->
+              <div class="slds-modal__header header" style="width:600px">
+                  <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                      variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+                  </lightning-button-icon> 
+                  <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Add Sub Task</h2>
+              </div> 
+              <!-- modal body start -->
+              <div class="slds-modal__content scroll-1" style="height: 150px;width:600px">
+                  <div class="slds-grid slds-wrap custom-container" style="margin-top:10px;">
+                    <div class="slds-col slds-size_1-of-2 slds-form-element__control"
+                    style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+                    <span style="padding-left:50px">
+                        <label class="slds-form-element__label"
+                          style="text-align:center;padding-bottom:5px; ">
+                            <em style="color:red;">*</em>Task Name
+                        </label>
+                        <br>
+                      
+                    <span style="padding-left:50px">
+                <lightning-icon icon-name="custom:custom5" variant="circle"
+                    alternative-text={taskName} size="small"></lightning-icon>
+                &nbsp;{taskName}
+            </span>
+        </span>
+    </div>    
+                    <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                        <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                            <abbr class="slds-required" title="required">*</abbr>Sub Task Name</label>
+                        
+                        <lightning-input 
+                            class=" requiredfield" 
+                            type="text"
+                            name="Task" variant="label-hidden"
+                            placeholder="NewTask" value={name} onchange={addName}
+                            style="padding-bottom: 20px;width:150px; font-weight: normal;color:#54698d">
+                        </lightning-input>
+                        </div>
+                                                           
+    
+              </div>
+              </div>
+              <!-- modal footer start-->
+              <div class="slds-modal__footer" style="width:600px">
+                  <div>
+                      <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Cancel" onclick={closeModal2}></lightning-button>
+                      <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Save" onclick={saveClick2}></lightning-button>
+                  </div>
+              </div>
+          </div>
+      </div>   
+      <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+    </template>
+
+    
+     
+ <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+
+ 
+     <!-- Delete Function -->
+
+     <template if:true={openDeleteModal}>
+      <!-- Modal/Popup Box LWC starts here -->
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container fix">
+          <!-- Modal/Popup Box LWC header here -->
+          <header class="slds-modal__header header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+              onclick={closeDeleteModal}>
+              <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small">
+              </lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 data-id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+              Delete
+            </h2>
+          </header>
+          <!-- Modal/Popup Box LWC body starts here -->
+          <div class="slds-modal__content slds-p-around_medium center-content"
+            data-id="modal-content-id-1">
+            <header style="text-align: center">
+              <br />
+              Are you sure you want to delete this ?
+            </header>
+          </div>
+          <!-- Modal/Popup Box LWC footer starts here -->
+          <footer class="slds-modal__footer">
+            <button class="slds-button slds-button_brand" onclick={handleFileDelete} title="Cancel">
+              Confirm
+            </button>
+            <button class="slds-button slds-button_brand" onclick={closeDeleteModal} title="Cancel">
+              Cancel
+            </button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>    
+</template>

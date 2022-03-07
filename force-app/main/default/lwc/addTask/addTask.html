@@ -1,0 +1,166 @@
+
+
+
+
+
+<template> 
+  <span>
+      <lightning-button value="Tak" label="Task" onclick={openModal}></lightning-button>     
+  </span>
+<template if:true={isModalOpen}>
+  <div class="slds-modal slds-fade-in-open slds-backdrop">
+      <div class="slds-modal__container custom-width2">
+          <!-- modal header start -->
+          <div class="slds-modal__header header" style="width:600px">
+              <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                  variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+              </lightning-button-icon> 
+              <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Task</h2>
+          </div> 
+          <!-- modal body start -->
+          <div class="slds-modal__content scroll-1" style="height: 150px;width:600px">
+              <div class="slds-grid slds-wrap custom-container" style="margin-top:10px;">
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control"
+                style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+                <span style="padding-left:50px">
+                    <label class="slds-form-element__label"
+                      style="text-align:center;padding-bottom:5px; ">
+                        <em style="color:red;">*</em>Milestone Name
+                    </label>
+                    <br>
+                  
+                <span style="padding-left:50px">
+            <lightning-icon icon-name="custom:custom5" variant="circle"
+                alternative-text={milestoneName} size="small"></lightning-icon>
+            &nbsp;{milestoneName}
+        </span>
+    </span>
+</div>   
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                    <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                        <abbr class="slds-required" title="required">*</abbr>Task Name</label>
+                    
+                    <lightning-input 
+                        class=" requiredfield" 
+                        type="text"
+                        name="Task" variant="label-hidden"
+                        placeholder="NewTask" value={name} onchange={addName}
+                        style="padding-bottom: 20px;width:150px; font-weight: normal;color:#54698d">
+                    </lightning-input>
+                    </div>
+                                                        
+
+          </div>
+          </div>
+          <!-- modal footer start-->
+          <div class="slds-modal__footer" style="width:600px">
+              <div>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Cancel" onclick={closeModal}></lightning-button>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Save" onclick={saveClick}></lightning-button>
+              </div>
+          </div>
+      </div>
+  </div>   
+  <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+</template>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <template> 
+    <span>
+        <lightning-button value="Task" label="Task" onclick={openModal}></lightning-button>     
+    </span>
+    <template if:true={isModalOpen}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-04" aria-modal="true"
+        aria-describedby="modal-content-id-4" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width: 80%;">
+          <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+              onclick={closeModal}>
+              <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 style="font-weight:bold" class="slds-text-heading_medium slds-hyphenate">Add Task
+            </h2>
+          </header>
+          <div class="slds-modal__content slds-p-around_medium">
+            <div class="slds-grid slds-wrap">
+              <lightning-messages></lightning-messages>
+  
+              <div class="slds-col slds-size_1-of-1 slds-p-horizontal_medium" style="
+              padding-left: 130px;
+              padding-right: 130px;
+          ">
+          <div class="slds-grid slds-wrap custom-container">
+            <div class="slds-col slds-size_1-of-1 slds-form-element__control"
+            style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+            <span>
+                <label class="slds-form-element__label">
+                    <em style="color:red;">*</em>Milestone  Name
+                </label>
+                <br>
+                <span>
+                    <lightning-icon icon-name="custom:custom5" variant="circle"
+                        alternative-text={milestoneName} size="small"></lightning-icon>
+                    &nbsp;{milestoneName}
+                </span>
+            </span>
+        </div>          
+          <div class="slds-col slds-size_1-of-1 slds-p-horizontal_medium">
+                <legend class="slds-form-element_legend slds-form-element_label slds-float_left"
+                  style="color: #1b1b1b; padding-bottom: 5px;">
+                  <em style="color: red;"> *</em> Task Name &nbsp;
+                </legend>
+                <lightning-input type="text" name="Taskname" value={name} onchange={addName} placeholder="New Task"
+                style="padding-bottom: 20px; padding-right: 20px;">
+              </lightning-input>
+              </div>
+              </div>            
+         <legend class="slds-form-element_legend slds-form-element_label slds-float_left"
+          style="color: #1b1b1b; padding-bottom: 5px;">
+          <em style="color: red;"> *</em>  End Date &nbsp;
+        </legend>
+        <lightning-input type="date" name="endDate" min={strtDate} value={enddate} onchange={changeDate}
+        style="padding-bottom: 20px; padding-right: 20px;">
+      </lightning-input>
+      <legend class="slds-form-element_legend slds-form-element_label slds-float_left"
+      style="color: #1b1b1b; padding-bottom: 5px;">
+      <em style="color: red;"> *</em>  Start Date &nbsp;
+    </legend>
+    <lightning-input type="date" name="endDate" min={minDate} value={strtDate} onchange={changestrtDate}
+    style="padding-bottom: 20px; padding-right: 20px;">
+  </lightning-input> -->
+  <!-- </div>  -->
+  <!-- </div>-->
+        
+          <!-- <footer class="slds-modal__footer"> -->
+            <!-- <div>
+              <button class="slds-button slds-button_neutral" onclick={closeModal}>
+                Cancel
+              </button>&nbsp;
+              <button class="slds-button slds-button_brand" onclick={saveClick} title="Save">
+                Done
+              </button>
+            </div>
+          </footer>
+        </div>
+      </div>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open" id="modalBackdrops1"></div>
+    </template>  -->
+   <!-- </template>  --> 

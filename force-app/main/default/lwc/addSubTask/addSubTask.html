@@ -1,0 +1,83 @@
+
+
+
+
+
+
+
+
+<template> 
+  <span>
+      <lightning-button value="Sub Task" label="Sub Task" onclick={openModal}></lightning-button>     
+  </span>
+<template if:true={isModalOpen}>
+  <div class="slds-modal slds-fade-in-open slds-backdrop">
+      <div class="slds-modal__container custom-width2">
+          <!-- modal header start -->
+          <div class="slds-modal__header header" style="width:600px">
+              <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                  variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+              </lightning-button-icon> 
+              <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Sub Task</h2>
+          </div> 
+          <!-- modal body start -->
+          <div class="slds-modal__content scroll-1" style="height: 150px;width:600px">
+              <div class="slds-grid slds-wrap custom-container" style="margin-top:10px;">
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control"
+                style="padding-bottom: 20px; padding-right: 20px; font-weight: normal;">
+                <span style="padding-left:50px">
+                    <label class="slds-form-element__label"
+                      style="text-align:center;padding-bottom:5px; ">
+                        <em style="color:red;">*</em>Task Name
+                    </label>
+                    <br>
+                  
+                <span style="padding-left:50px">
+            <lightning-icon icon-name="custom:custom5" variant="circle"
+                alternative-text={taskName} size="small"></lightning-icon>
+            &nbsp;{taskName}
+        </span>
+    </span>
+</div>    
+                <div class="slds-col slds-size_1-of-2 slds-form-element__control" style="padding-left:50px;">
+                    <label style="font-style: normal; font-weight: normal; margin-bottom: 2px; color: rgb(59, 59, 59);">
+                        <abbr class="slds-required" title="required">*</abbr>Sub Task Name</label>
+                    
+                    <lightning-input 
+                        class=" requiredfield" 
+                        type="text"
+                        name="Task" variant="label-hidden"
+                        placeholder="NewTask" value={name} onchange={addName}
+                        style="padding-bottom: 20px;width:150px; font-weight: normal;color:#54698d">
+                    </lightning-input>
+                    </div>
+                                                       
+
+          </div>
+          </div>
+          <!-- modal footer start-->
+          <div class="slds-modal__footer" style="width:600px">
+              <div>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Cancel" onclick={closeModal}></lightning-button>
+                  <lightning-button type="button" variant="brand" class="slds-m-left_x-small" label="Save" onclick={saveClick}></lightning-button>
+              </div>
+          </div>
+      </div>
+  </div>   
+  <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+</template>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

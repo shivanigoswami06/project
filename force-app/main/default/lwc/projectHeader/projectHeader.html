@@ -1,0 +1,92 @@
+<template>
+    <div class="slds-page-header slds-page-header_record-home">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-icon slds-icon--large">
+                        <lightning-icon icon-name="standard:account" size="medium"></lightning-icon>
+                    </div>                   
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span>Project Management</span>
+
+                                    <span class="slds-page-header__title slds-truncate"
+                                        >{name}</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-page-header__row slds-page-header__row_gutters">
+            <div class="slds-page-header__col-details">
+                <ul class="slds-page-header__detail-row">
+                    <!-- <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Project Name
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">{aptitle}</div>
+                      </li> -->
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate">
+                            Created Date
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">{createddate}</div>
+                      </li>
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate">
+                            Consumed Cost
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">{consumedcost}</div>
+                      </li>
+            
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Project Manager
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">
+                          {projectmanager}
+                        </div>
+                      </li>
+            
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Total Tasks
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">
+                          {totaltask}
+                        </div>
+                      </li>
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Completed Tasks
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">
+                          {completedtask}
+                        </div>
+                      </li>
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Delayed Tasks
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">
+                          {delayedtask}
+                        </div>
+                      </li>
+                      <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title slds-truncate" >
+                            Total Mambers
+                        </div>
+                        <div style="font-weight: bold" class="slds-truncate">
+                          {totalmembers}
+                        </div>
+                      </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>

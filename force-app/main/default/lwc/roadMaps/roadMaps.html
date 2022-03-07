@@ -1,0 +1,253 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+      </template>
+      <article class="slds-card" style="padding-top: 5px;" >
+      <div class="slds-grid slds-wrap" style="padding-left: 71px">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_10-of-12">
+            <div class="slds-grid slds-wrap slds-grid_align-end">
+              <div class="slds-size_1-of-3 slds-m-around_x-small headdiv" >
+                <lightning-input type="search" label="combobox" role="textbox" variant="label-hidden"
+                  placeholder="Search " onchange={handleSearch} value={searchKey} style="width: auto;">
+                </lightning-input>
+              </div>
+              <div class="slds-size_1-of-3 slds-m-around_x-small headdiv">
+                <lightning-button-group>
+                  
+                
+                      <lightning-button  variant="neutral" label="Save" onclick={handleCollapseAll}>
+                      </lightning-button> 
+                  
+                  
+                   <lightning-button class="collapse" variant="brand" label="Collapse All" style="
+                   width: 9em;
+               " onclick={handleCollapseAll}>
+                  </lightning-button> 
+                  
+                
+                
+                  
+                
+                    <lightning-button  variant="neutral" label="Weeks" onclick={handleweeks}>
+                    </lightning-button> 
+                
+                
+                 <lightning-button class="neutral" variant="neutral" label="Months" onclick={handlemonths}>
+                </lightning-button> 
+                <lightning-button class="neutral" variant="neutral" label="Quarters" onclick={handlequater}>
+                </lightning-button> 
+                <lightning-button alternative-text="Show menu" variant="neutral"  icon-name="utility:date_input"
+                onclick={handleOnSelect}>
+               </lightning-button>
+               <lightning-button alternative-text="Show menu" variant="neutral"  icon-name="utility:filterList"
+                onclick={handleOnSelect}>
+               </lightning-button>
+                
+              </lightning-button-group>
+             
+              </div>
+            </div>
+          </div>
+      </div>
+      <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_x-small">
+      
+          <thead>
+           
+            <tr>
+              <!-- <th style="width:100px; height:5px;"> -->
+                <td  scope="col" colspan="1" rowspan="3">
+                 <div>Milestone/Task/Subtask</div> 
+                 </td>
+              <!-- </th> -->
+          
+             
+             
+            <!-- <template if:false={searchUser}>
+              <template for:each={projectdata} for:item="rowData" for:index="index">
+                <tr data-name="rowdrag" key={rowData.id} class={rowData.rowStyle} 
+                  ondrop={drop}>
+                  
+  
+                  <td>
+                    <div>
+                      <lightning-icon icon-name={rowData.iconStyle} size="x-small" onclick={showOrHideChildrenRows}
+                          data-rowid={rowData.id} data-recordid={rowData.id} data-rowlevel={rowData.Level}>
+                      </lightning-icon>
+                    </div>
+                    </td>
+                    <td>
+                  <div style={rowData.nameStyle} class="iconstyle">
+                    <div>
+                    <lightning-icon icon-name={rowData.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                        data-rowid={rowData.id} data-recordid={rowData.id} data-rowlevel={rowData.Level}>
+                    </lightning-icon>
+                  </div>
+                  </div>
+                  </td> -->
+                 
+                    
+                
+                  <!-- <td style="text-align: left;">
+                    {rowData.Name}</td>
+                  </tr>
+                </template>
+               
+                <template for:each={searchList} for:item="s" for:index="index">
+                  <tr data-id={index} data-name="rowdrag" key={s.id} class={s.rowStyle} 
+                    ondrop={drop}>
+                   
+    
+                    <td>
+                    <div style={s.nameStyle} class="iconstyle">
+                      <div>
+                      <lightning-icon icon-name={s.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                          data-rowid={s.id} data-recordid={s.id} data-rowlevel={s.Level}>
+                      </lightning-icon>
+                    </div>
+                    </div>
+                    </td>
+                   
+                   
+                    <td style="text-align: left;">{s.Name}</td>-->
+                   
+                
+                     
+                        
+                  </tr>
+              
+            <!-- </template>  -->
+            <!-- </template> -->
+<tr>
+            <template for:each={Dates} for:item="Date">
+              <td
+                key={Date.DateId}
+                colspan="7"
+                rowspan="1"
+                style="
+                  border-left: solid 0.5px rgb(112, 112, 112, 0.25);
+                  border-right: solid 0.5px rgb(112, 112, 112, 0.25);
+                   text-align:center; width:100px;">
+                {Date.DateName}
+              </td>
+            </template>
+          </tr>
+          <tr>
+            <template for:each={Days} for:item="Day">
+              <td
+              rowspan="3"
+             
+                key={Day.DayId}
+               
+                style="border-bottom: solid 0.5px rgb(112, 112, 112, 0.25);padding-left:300px;"
+              >
+                {Day.DayName}
+                
+              </td>
+            </template>
+          </tr>
+        
+        </thead>
+      </table>
+    <!-- </article> -->
+           
+          
+
+            <!-- <template for:each={Dates} for:item="Date">
+              <td
+              key={Date.DateId}
+              colspan="7"
+              rowspan="1"
+              style="
+                border-left: solid 0.5px rgb(112, 112, 112, 0.25);
+                border-right: solid 0.5px rgb(112, 112, 112, 0.25);
+                 text-align:center">
+              {Date.DateName}
+            </td>
+                        </template>
+            </tr>
+            <tr>
+              <template for:each={Days} for:item="Day">
+                <td
+                  key={Day.DayId}
+                  rowspan="1"
+                  style="border-bottom: solid 0.5px rgb(112, 112, 112, 0.25)"
+                >
+                  {Day.DayName}
+                </td>
+              
+              </template>
+           
+            </tr>
+        </thead>
+        </table>
+       -->
+         
+        
+          <!-- <tbody style="padding: l;"> -->
+            <!-- <template if:false={searchUser}> -->
+            <template for:each={projectdata} for:item="rowData" for:index="index">
+              <tr data-name="rowdrag" key={rowData.id} class={rowData.rowStyle} 
+                ondrop={drop}>
+                <!--1-->
+                
+
+                 <td>
+                  <div>
+                    <lightning-icon icon-name={rowData.iconStyle} size="x-small" onclick={showOrHideChildrenRows}
+                        data-rowid={rowData.id} data-recordid={rowData.id} data-rowlevel={rowData.Level}>
+                    </lightning-icon>
+                  </div>
+                  </td>
+                  <td>
+                <div style={rowData.nameStyle} class="iconstyle">
+
+                  <div>
+                  <lightning-icon icon-name={rowData.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                      data-rowid={rowData.id} data-recordid={rowData.id} data-rowlevel={rowData.Level}>
+                  </lightning-icon>
+                </div>
+                </div>
+                </td>
+               
+                  
+              
+                <td style="text-align: left;">
+                  {rowData.Name}</td> 
+                </tr>
+              </template> 
+              <!-- </template> -->
+              <!-- <template if:true={searchUser}> 
+             
+              <template for:each={searchList} for:item="s" for:index="index">
+                <tr data-id={index} data-name="rowdrag" key={s.id} class={s.rowStyle} 
+                  ondrop={drop}>
+                 
+  
+                  <td>
+                  <div style={s.nameStyle} class="iconstyle">
+                    <div>
+                    <lightning-icon icon-name={s.iconName} size="x-small" onclick={showOrHideChildrenRows}
+                        data-rowid={s.id} data-recordid={s.id} data-rowlevel={s.Level}>
+                    </lightning-icon>
+                  </div>
+                  </div>
+                  </td>
+                 
+                  <td style="text-align: left;">{s.Name}</td> -->
+                  <!--3-->
+              
+               
+                      
+                <!-- </tr> -->
+              <!-- </template>
+            </template>
+          </template> -->
+          <!-- </template> -->
+          <!-- </tbody> -->
+        <!-- </table> -->
+      <!-- </div> -->
+    <!-- </lightning-card> -->
+  </article>
+</template>
+
